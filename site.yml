@@ -1,0 +1,13 @@
+---
+# Deploy the whole stack
+
+- hosts: all
+  roles:
+  - common
+
+- hosts: appservers
+  become: yes
+  become_user: vagrant
+  roles:
+  - base-apache2-php
+  - dokuwiki

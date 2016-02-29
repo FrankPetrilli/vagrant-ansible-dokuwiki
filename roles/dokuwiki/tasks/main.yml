@@ -1,0 +1,15 @@
+---
+# Install DokuWiki
+- name: Download DokuWiki
+  get_url: url="http://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz" dest=/tmp/dokuwiki-stable.tgz
+
+- name: Unpack DokuWiki
+  unarchive: src=/tmp/dokuwiki-stable.tgz dest=/var/www/html/ copy=no
+  become: yes
+  become_user: root
+
+- name: Fix permissions
+  file: path=/var/www/html owner=www-data group=www-data mode=0755 recurse=yes
+  become: yes
+  become_user: root
+

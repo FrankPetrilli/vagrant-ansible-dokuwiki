@@ -1,0 +1,37 @@
+---
+# This role contains common plays that will run on all nodes.
+
+- name: Turn on UFW
+  ufw: state=enabled policy=allow
+  become: yes
+  become_user: root
+
+- name: Reject password-based SSH
+  lineinfile: dest=/etc/ssh/sshd_config regexp="PasswordAuthentication" line="PasswordAuthentication no" state=present
+  become: yes
+  become_user: root
+
+- name: Allow SSH 
+  ufw: rule=allow name=OpenSSH
+  become: yes
+  become_user: root
+
+- name: Restart SSH
+  service: name=ssh state=restarted
+  become: yes
+  become_user: root
+
+- name: Reject everything else
+  ufw: policy=reject
+  become: yes
+  become_user: root
+
+- name: Create vagrant user, just in case
+  user: name=vagrant groups=adm,sudo append=yes state=present
+  become: yes
+  become_user: root
+
+- name: Update apt cache
+  apt: update_cache=yes
+  become: yes
+  become_user: root
